@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static "valiadmin/css/main.css" %}">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Vali Admin</title>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries-->
+    <!--if lt IE 9
+    script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
+    script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
+    -->
+  </head>
+  <body>
+    <section class="material-half-bg">
+      <div class="cover"></div>
+    </section>
+    <section class="login-content">
+      <div class="logo">
+        <h1>Vali</h1>
+      </div>
+      <div class="login-box">
+        <form class="login-form" action="{% url 'login' %}" method="POST">
+            {% csrf_token  %}
+            <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>SIGN IN</h3>
+            {% for field in form %}
+               <div class="form-group">
+                    {{ field.errors }}
+                   <label class="control-label">{{ field.label_tag }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                    <p class="help">{{ field.help_text|safe }}</p>
+                    {% endif %}
+               </div>
+
+            {% endfor %}
+
+          <div class="form-group btn-container">
+            <button class="btn btn-primary btn-block"><i class="fa fa-sign-in fa-lg fa-fw"></i>INICIAR SESSION</button>
+          </div>
+        </form>
+
+      </div>
+    </section>
+
+
+  </body>
+  <script src="{% static "valiadmin/js/jquery-2.1.4.min.js" %}"></script>
+    <script src="{% static "valiadmin/js/bootstrap.min.js" %}"></script>
+    <script src="{% static "valiadmin/js/plugins/pace.min.js" %}"></script>
+    <script src="{% static "valiadmin/js/main.js" %}"></script>
+
+  <script type="text/javascript">
+        $( document ).ready(function() {
+
+        });
+  </script>
+</html>
