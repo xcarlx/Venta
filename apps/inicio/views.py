@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.views.generic.base import View
@@ -14,6 +14,8 @@ from .forms import AuthenticationForm
 from django.contrib.auth import authenticate, login,logout
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
+from django.views.generic.edit import FormView
+from .forms import PersonaInicioForm
 
 # Create your views here.
 @method_decorator(login_required, name='dispatch')
@@ -103,3 +105,20 @@ class LogoutView(View):
     def get(self, requets):
         logout(requets)
         return redirect('/')
+
+class PersonaFormView(View):
+    template_name = 'formulariopersona.html'
+    form_class = PersonaInicioForm
+    success_url = '/thanks/'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(0)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            # <process form cleaned data>
+            return HttpResponseRedirect('/success/')
+
+        return render(request, self.template_name, {'form': form})
