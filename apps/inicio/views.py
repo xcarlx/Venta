@@ -32,7 +32,7 @@ class homeView(TemplateView):
 @method_decorator(login_required, name='dispatch')
 class JsonPersonaView(View):
     def get(self, request):
-        order = str(request.GET.get('order','-'))
+        order = str(request.GET.get('order'))
         offset = int(request.GET.get('offset',0))
         limit = int(request.GET.get('limit',10))
         search = str(request.GET.get('search',''))
@@ -41,7 +41,7 @@ class JsonPersonaView(View):
             order = str('-')
         else:
             order = str('')
-        contact_list = Persona.objects.all()
+        contact_list = Persona.objects.all().order_by("-id")
         if len(sort)>0:
             contact_list = Persona.objects.all().order_by(order+sort)
         if len(search)>0:

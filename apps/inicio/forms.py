@@ -66,11 +66,11 @@ class PersonaInicioForm(forms.ModelForm):
             field.widget.attrs['class'] = 'form-control'
         self.fields['ubigeo'].widget = forms.HiddenInput()
         self.fields['departamento'].queryset = Ubigeo.objects.filter(cod_pro='00',cod_dis='00')
-        self.fields['provincia'].queryset = Ubigeo.objects.filter(cod_dis='00').exclude(cod_pro='00')
-        self.fields['distrito'].queryset = Ubigeo.objects.filter().exclude(cod_pro='00',cod_dis='00')
+        self.fields['provincia'].queryset = Ubigeo.objects.filter(cod_pro='00').exclude(cod_dep='00', cod_pro='00')
+        self.fields['distrito'].queryset = Ubigeo.objects.filter(cod_dis='00').exclude(cod_pro='00',cod_dis='00')
 
         if int(nro>0):
             ids = Ubigeo.objects.get(pk=nro)
-            self.fields['provincia'].queryset = Ubigeo.objects.filter(Q(coddpto=ids.cod_dep)  & Q(coddist='00') & ~Q(codprov='00'))
-            self.fields['distrito'].queryset = Ubigeo.objects.filter(Q(coddpto=ids.cod_dep) & Q(codprov=ids.cod_pro) & ~Q(coddist='00'))
+            self.fields['provincia'].queryset = Ubigeo.objects.filter(Q(cod_dep=ids.cod_dep)  & Q(coddist='00') & ~Q(codprov='00'))
+            self.fields['distrito'].queryset = Ubigeo.objects.filter(Q(cod_dep=ids.cod_dep) & Q(codprov=ids.cod_pro) & ~Q(coddist='00'))
 
