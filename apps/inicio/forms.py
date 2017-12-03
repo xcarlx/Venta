@@ -1,6 +1,5 @@
 from django import forms
 from django.contrib.auth import authenticate, get_user_model
-from django.db.models import Q
 from django.utils.text import capfirst
 
 from ..personas.models import Ubigeo
@@ -56,21 +55,17 @@ class AuthenticationForm(forms.Form):
 class PersonaInicioForm(forms.ModelForm):
     departamento=forms.ModelChoiceField(queryset=None)
     provincia=forms.ModelChoiceField(queryset=None)
-    distrito=forms.ModelChoiceField(queryset=None)
     class Meta:
         model = models.Persona
-        fields = '__all__'
+        fields = ['nombre', 'paterno','materno','nacimiento','departamento','provincia','ubigeo','sexo']
     def __init__(self,nro,*args, **kwargs):
         super(PersonaInicioForm, self).__init__(*args, **kwargs)
         for i, (fname, field) in enumerate(self.fields.iteritems()):
             field.widget.attrs['class'] = 'form-control'
-        self.fields['ubigeo'].widget = forms.HiddenInput()
+        self.fields['nacimiento'].widget.attrs[' data-provide'] = "datepicker"
         self.fields['departamento'].queryset = Ubigeo.objects.filter(cod_pro='00',cod_dis='00')
-        self.fields['provincia'].queryset = Ubigeo.objects.filter(cod_pro='00').exclude(cod_dep='00', cod_pro='00')
-        self.fields['distrito'].queryset = Ubigeo.objects.filter(cod_dis='00').exclude(cod_pro='00',cod_dis='00')
+        self.fields['provincia'].queryset = Ubigeo.objects.filter(id =-1)
+        self.fields['ubigeo'].queryset = Ubigeo.objects.filter(id =-1)
+        self.fields['ubigeo'].label = "Distrito"
 
-        if int(nro>0):
-            ids = Ubigeo.objects.get(pk=nro)
-            self.fields['provincia'].queryset = Ubigeo.objects.filter(Q(cod_dep=ids.cod_dep)  & Q(coddist='00') & ~Q(codprov='00'))
-            self.fields['distrito'].queryset = Ubigeo.objects.filter(Q(cod_dep=ids.cod_dep) & Q(codprov=ids.cod_pro) & ~Q(coddist='00'))
 

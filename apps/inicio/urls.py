@@ -13,7 +13,8 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from .views import homeView, LoginView, LogoutView,JsonPersonaView,PersonaFormView
+from .views import homeView, LoginView, \
+    LogoutView,JsonPersonaView,PersonaFormView,JsonUbigeo
 from django.conf.urls import url
 
 urlpatterns = [
@@ -23,5 +24,6 @@ urlpatterns = [
 
     url(r'^persona/lista/', JsonPersonaView.as_view(), name='lista-persona'),
     url(r'^persona/formulario/', PersonaFormView.as_view(), name='persona-formulario'),
+    url(r'^persona/ubigeo/(?P<tipo>\w+)/(?P<id>[0-9]+)/', JsonUbigeo.as_view(), name='persona-ubigeo'),
 
 ]

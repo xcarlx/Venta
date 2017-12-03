@@ -66,7 +66,8 @@
 
     </tbody>
 </table>
-    {% include "modalFormulario.html" with idmodal='idPersonaModal' idformulario='idPersonaForm'  %}
+
+    {% include "modalFormulario.html" with idmodal='idPersonaModal' idformulario='idPersonaForm' urlaction='../persona/formulario/'  %}
 {% endblock %}
 
 {% block js_maestro %}
@@ -84,33 +85,45 @@
             return {};
         }
 
-function actionFormatter(value, row, index) {
-    return [
-        '<a class="edit ml10" href="javascript:void(0)" title="Edit" data-toggle="modal" data-target="#idpersonaModal">',
-        '<i class="fa fa-edit"></i>',
-        '</a>',
-        '<a class="remove ml10" href="javascript:void(0)" title="Remove">',
-        '<i class="fa fa-remove"></i>',
-        '</a>'
-    ].join('');
-}
+        function actionFormatter(value, row, index) {
+            return [
+                '<a class="edit ml10" href="javascript:void(0)" title="Edit" data-toggle="modal" data-target="#idpersonaModal">',
+                '<i class="fa fa-edit"></i>',
+                '</a>',
+                '<a class="remove ml10" href="javascript:void(0)" title="Remove">',
+                '<i class="fa fa-remove"></i>',
+                '</a>'
+            ].join('');
+        }
 
-window.actionEvents = {
-    'click .edit': function (e, value, row, index) {
-        alert('You click edit icon, row: ' + JSON.stringify(row));
-        console.log(value, row, index);
-    },
-    'click .remove': function (e, value, row, index) {
-        alert('You click remove icon, row: ' + JSON.stringify(row));
-        console.log(value, row, index);
-    }
-};
+        window.actionEvents = {
+            'click .edit': function (e, value, row, index) {
+                alert('You click edit icon, row: ' + JSON.stringify(row));
+                console.log(value, row, index);
+            },
+            'click .remove': function (e, value, row, index) {
+                alert('You click remove icon, row: ' + JSON.stringify(row));
+                console.log(value, row, index);
+            }
+        };
+
+
         $("#idNuevaPersona").on('click', function () {
+            $("#idPersonaModal").on('shown.bs.modal', function () {
+                $(this).find('h4').text("Nueva Persona")
+                $(this).find(".modal-body").load("{% url 'persona-formulario'%}")
+
+            });
             $("#idPersonaModal").modal('show');
+             $('#id_nacimiento').datepicker({
+                format: "dd/mm/yyyy",
+                autoclose: true,
+                todayHighlight: true
+            });
         });
-        $("#idPersonaModal").on('shown.bs.modal', function () {
-          $(this).find(".modal-body").load("{% url 'persona-formulario'%}")
-        })
+
+
+
 
 
     </script>

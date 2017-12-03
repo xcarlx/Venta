@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.views.generic.base import View
 
-from ..personas.models import Persona
+from ..personas.models import Persona, Ubigeo
 from .models import Permiso
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -16,6 +16,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.views.generic.edit import FormView
 from .forms import PersonaInicioForm
+from django.db.models import Q
 
 # Create your views here.
 @method_decorator(login_required, name='dispatch')
@@ -71,13 +72,10 @@ class JsonPersonaView(View):
             person['sexo'] = persona.get_sexo_display()
             person['lugar'] = persona.LugarNacimineto()
             lista.append(person)
-            dic['total'] = contact_list.count()
-            dic['rows'] = lista
+        dic['total'] = contact_list.count()
+        dic['rows'] = lista
 
         return JsonResponse(dic)
-
-
-
 
 class LoginView(View):
     form_class = AuthenticationForm
@@ -106,6 +104,8 @@ class LogoutView(View):
         logout(requets)
         return redirect('/')
 
+
+@method_decorator(login_required, name='dispatch')
 class PersonaFormView(View):
     template_name = 'formulariopersona.html'
     form_class = PersonaInicioForm
@@ -122,3 +122,34 @@ class PersonaFormView(View):
             return HttpResponseRedirect('/success/')
 
         return render(request, self.template_name, {'form': form})
+
+
+class JsonUbigeo(View):
+    def get(self, request,  *args, **kwargs):
+        tipo = kwargs['tipo']
+        dic = {}
+        lista = []
+        ids = kwargs['id']
+        if tipo=="provincia":
+            departamento = Ubigeo.objects.get(pk = ids)
+            ubigeos = Ubigeo.objects.filter(cod_dep=departamento.cod_dep,cod_dis='00').exclude(cod_pro='00')
+            for ubigeo in ubigeos:
+                dicubigeo = {}
+                dicubigeo['nombre'] = ubigeo.nombre
+                dicubigeo['cod_pro'] = ubigeo.cod_pro
+                dicubigeo['idprovincia'] = ubigeo.id
+                lista.append(dicubigeo)
+            dic['ubigeo'] = lista
+            return JsonResponse(dic)
+        else:
+            distrito = Ubigeo.objects.get(pk=ids)
+            ubigeos = Ubigeo.objects.filter(cod_pro=distrito.cod_pro,cod_dep=distrito.cod_dep).exclude(cod_dis='00')
+            for ubigeo in ubigeos:
+                dicubigeo = {}
+                dicubigeo['nombre'] = ubigeo.nombre
+                dicubigeo['cod_dis'] = ubigeo.cod_dis
+                dicubigeo['iddistrito'] = ubigeo.id
+                lista.append(dicubigeo)
+            dic['ubigeo'] = lista
+            return JsonResponse(dic)
+
