@@ -53,19 +53,18 @@ class AuthenticationForm(forms.Form):
         return self.cleaned_data
 
 class PersonaInicioForm(forms.ModelForm):
-    departamento=forms.ModelChoiceField(queryset=None)
-    provincia=forms.ModelChoiceField(queryset=None)
+    departamento=forms.ModelChoiceField(queryset=Ubigeo.objects.filter(cod_pro='00',cod_dis='00'),required=False)
+    provincia=forms.ModelChoiceField(queryset=Ubigeo.objects.filter(id=-1), required=False)
+    distrito=forms.ModelChoiceField(queryset=Ubigeo.objects.filter(id=-1),required=False)
     class Meta:
         model = models.Persona
-        fields = ['nombre', 'paterno','materno','nacimiento','departamento','provincia','ubigeo','sexo']
-    def __init__(self,nro,*args, **kwargs):
+        fields = ['nombre', 'paterno','materno','nacimiento','departamento','provincia','distrito','ubigeo','sexo']
+    def __init__(self,*args, **kwargs):
         super(PersonaInicioForm, self).__init__(*args, **kwargs)
         for i, (fname, field) in enumerate(self.fields.iteritems()):
             field.widget.attrs['class'] = 'form-control'
         self.fields['nacimiento'].widget.attrs[' data-provide'] = "datepicker"
-        self.fields['departamento'].queryset = Ubigeo.objects.filter(cod_pro='00',cod_dis='00')
-        self.fields['provincia'].queryset = Ubigeo.objects.filter(id =-1)
-        self.fields['ubigeo'].queryset = Ubigeo.objects.filter(id =-1)
-        self.fields['ubigeo'].label = "Distrito"
+        self.fields['ubigeo'].widget = forms.HiddenInput()
+
 
 

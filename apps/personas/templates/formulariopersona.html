@@ -1,6 +1,7 @@
 {% csrf_token %}
 {% for field in form %}
     <div class="form-group">
+        {{ field.errors }}
         {{ field.label_tag}}
         {{ field }}
     </div>
@@ -15,26 +16,40 @@
            $("#id_provincia option").remove();
            sel.append($("<option>").attr('value','').text('---------'));
            for(i = 0; i<data.ubigeo.length; i++){
-               sel.append($("<option>").attr('value',data.ubigeo[i].idprovincia).text(data.ubigeo[i].nombre));
+               sel.append($("<option>").attr('value',data.ubigeo[i].idprovincia).text(data.ubigeo[i].nombre).prop('selected', ''));
            }
         });
-        var sel = $('#id_ubigeo');
-        $("#id_ubigeo option").remove();
+        var sel = $('#id_provincia');
+        $("#id_provincia option").remove();
         sel.append($("<option>").attr('value','').text('---------'));
+        var sel1 = $('#id_distrito');
+        $("#id_distrito option").remove();
+        sel1.append($("<option>").attr('value','').text('---------'));
     });
     $("#id_provincia").change(function () {
         iddepartamento = $(this).val();
         var urls = "{% url 'persona-ubigeo' 'distrito' 12345 %}".replace(/12345/, iddepartamento)
         $.get(urls, function( data ) {
-           var sel = $('#id_ubigeo');
-           $("#id_ubigeo option").remove();
+           var sel = $('#id_distrito');
+           $("#id_distrito option").remove();
            sel.append($("<option>").attr('value','').text('---------'));
            for(i = 0; i<data.ubigeo.length; i++){
-               sel.append($("<option>").attr('value',data.ubigeo[i].idprovincia).text(data.ubigeo[i].nombre));
+               sel.append($("<option>").attr('value',data.ubigeo[i].iddistrito).text(data.ubigeo[i].nombre).prop('selected', ''));
            }
         });
-    });
-    $("#idBotonModal").on('click', function () {
+        var sel1 = $('#id_distrito');
+        $("#id_distrito option").remove();
+        sel1.append($("<option>").attr('value','').text('---------'));
 
-    })
+    });
+    $("#id_distrito").change(function () {
+        $("#id_ubigeo").val($(this).val());
+    });
+    $('#id_nacimiento').datepicker({
+        format: "dd/mm/yyyy",
+        autoclose: true,
+        todayHighlight: true
+    });
+
+
 </script>

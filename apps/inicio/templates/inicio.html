@@ -1,9 +1,8 @@
 {% extends "base.html" %}
 
 {% block titulo %}
-
+    Pagina Inicio
 {% endblock %}
-
 {% block css_maestro%}
     <style>
         .ml10 {
@@ -67,13 +66,13 @@
     </tbody>
 </table>
 
-    {% include "modalFormulario.html" with idmodal='idPersonaModal' idformulario='idPersonaForm' urlaction='../persona/formulario/'  %}
+    {% include "modalFormulario.html" with idmodal='idPersonaModal' idformulario='idPersonaForm' urlAccionform='/persona/formulario/' %}
 {% endblock %}
 
 {% block js_maestro %}
 
     <script>
-
+        var formulario = $("#idPersonaForm");
         function rowStyle(row, index) {
 
             var classes = ['active'];
@@ -106,25 +105,23 @@
                 console.log(value, row, index);
             }
         };
-
-
-        $("#idNuevaPersona").on('click', function () {
-            $("#idPersonaModal").on('shown.bs.modal', function () {
-                $(this).find('h4').text("Nueva Persona")
-                $(this).find(".modal-body").load("{% url 'persona-formulario'%}")
-
-            });
-            $("#idPersonaModal").modal('show');
-             $('#id_nacimiento').datepicker({
-                format: "dd/mm/yyyy",
-                autoclose: true,
-                todayHighlight: true
-            });
+         $("#idPersonaModal").on('shown.bs.modal', function () {
+            $(this).find('h4').text("Nueva Persona")
+            $(this).find(".modal-body").load("{% url 'persona-formulario'%}");
         });
 
+        $("#idNuevaPersona").on('click', function () {
 
+            $("#idPersonaModal").modal('show');
 
-
+        });
+        $("#idBotonModal").on('click', function () {
+             $.post("{% url 'persona-formulario' %}", formulario.serialize())
+                 .done(function( data ) {
+                    $("#idPersonaModal").find(".modal-body").html(data)
+                 });
+            {#formulario.submit();#}
+        });
 
     </script>
 

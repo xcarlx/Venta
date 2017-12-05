@@ -14,7 +14,7 @@ from .forms import AuthenticationForm
 from django.contrib.auth import authenticate, login,logout
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
-from django.views.generic.edit import FormView
+from django.views.generic.edit import FormView, CreateView
 from .forms import PersonaInicioForm
 from django.db.models import Q
 
@@ -112,7 +112,7 @@ class PersonaFormView(View):
     success_url = '/thanks/'
 
     def get(self, request, *args, **kwargs):
-        form = self.form_class(0)
+        form = self.form_class()
         return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
@@ -123,7 +123,7 @@ class PersonaFormView(View):
 
         return render(request, self.template_name, {'form': form})
 
-
+@method_decorator(login_required, name='dispatch')
 class JsonUbigeo(View):
     def get(self, request,  *args, **kwargs):
         tipo = kwargs['tipo']
@@ -152,4 +152,3 @@ class JsonUbigeo(View):
                 lista.append(dicubigeo)
             dic['ubigeo'] = lista
             return JsonResponse(dic)
-

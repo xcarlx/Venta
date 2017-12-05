@@ -2,6 +2,8 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.urls import reverse
+
 
 class Ubigeo(models.Model):
 	cod_dep = models.CharField(max_length=2)
@@ -29,6 +31,9 @@ class Persona(models.Model):
 	nacimiento = models.DateField(blank=True, null=True)
 	ubigeo = models.ForeignKey(Ubigeo)
 	sexo = models.CharField(max_length=1,choices=SEXOL_CHOICES,default=MASCULINO,)
+
+	def get_absolute_url(self):
+		return reverse('author-detail', kwargs={'pk': self.pk})
 
 	def __unicode__(self):
 		return "%s" % (self.nombre)
