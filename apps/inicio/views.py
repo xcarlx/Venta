@@ -109,17 +109,25 @@ class LogoutView(View):
 class PersonaFormView(View):
     template_name = 'formulariopersona.html'
     form_class = PersonaInicioForm
-    success_url = '/thanks/'
 
     def get(self, request, *args, **kwargs):
-        form = self.form_class()
+        ids = int(self.kwargs['id'])
+        if ids == 0:
+            form = self.form_class()
+        else:
+            persona = Persona.objects.get(pk=ids)
+            initial = {'departamento': 1,'provincia':2, 'distrito':3}
+            form = self.form_class(instance=persona, initial=initial)
         return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
+        dic = {"estado":False, "mensaje":"No se guardo !!!"}
         if form.is_valid():
-            # <process form cleaned data>
-            return HttpResponseRedirect('/success/')
+            dic['estado'] = True
+            dic['mensaje'] = "Guardado Correctamente"
+            form.save()
+            return JsonResponse(dic)
 
         return render(request, self.template_name, {'form': form})
 

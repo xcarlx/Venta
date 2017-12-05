@@ -44,13 +44,13 @@
         data-toggle="table"
         id="table"
         data-toolbar="#toolbar"
-        data-height="460"
+        data-height="480"
         data-url="{% url 'lista-persona' %}"
         data-search="true"
         data-row-style="rowStyle"
         data-side-pagination="server"
         data-pagination="true"
-        data-page-list="[1, 2, 3, 4, 5]"
+        data-page-list="[5, 10, 25, 50]"
         data-search="true">
         <thead>
             <tr>
@@ -66,13 +66,17 @@
     </tbody>
 </table>
 
-    {% include "modalFormulario.html" with idmodal='idPersonaModal' idformulario='idPersonaForm' urlAccionform='/persona/formulario/' %}
+    {% include "modalFormulario.html" with idmodal='idPersonaModal' idformulario='idPersonaForm' urlAccionform='' %}
 {% endblock %}
 
 {% block js_maestro %}
 
     <script>
         var formulario = $("#idPersonaForm");
+        var modalweb = $("#idPersonaModal");
+        var tabla = $("#table");
+        var modelo= "Persona";
+        var idmodelo = 0;
         function rowStyle(row, index) {
 
             var classes = ['active'];
@@ -86,7 +90,7 @@
 
         function actionFormatter(value, row, index) {
             return [
-                '<a class="edit ml10" href="javascript:void(0)" title="Edit" data-toggle="modal" data-target="#idpersonaModal">',
+                '<a class="edit ml10" href="javascript:void(0)" title="Edit">',
                 '<i class="fa fa-edit"></i>',
                 '</a>',
                 '<a class="remove ml10" href="javascript:void(0)" title="Remove">',
@@ -97,30 +101,49 @@
 
         window.actionEvents = {
             'click .edit': function (e, value, row, index) {
-                alert('You click edit icon, row: ' + JSON.stringify(row));
-                console.log(value, row, index);
+                idmodelo = row.id;
+                modalweb.modal('show');
             },
             'click .remove': function (e, value, row, index) {
                 alert('You click remove icon, row: ' + JSON.stringify(row));
                 console.log(value, row, index);
             }
         };
-         $("#idPersonaModal").on('shown.bs.modal', function () {
-            $(this).find('h4').text("Nueva Persona")
-            $(this).find(".modal-body").load("{% url 'persona-formulario'%}");
+
+         modalweb.on('shown.bs.modal', function () {
+             if(idmodelo>0){
+                 $(this).find('h4').text("Ediar "+modelo);
+             }else{
+                 $(this).find('h4').text("Nueva "+modelo);
+             }
+             var urleditar = ("{% url 'persona-formulario' 12345 %}").replace(/12345/, idmodelo);
+             $(this).find(".modal-body").load(urleditar);
         });
 
         $("#idNuevaPersona").on('click', function () {
-
-            $("#idPersonaModal").modal('show');
-
+            idmodelo = 0;
+            modalweb.modal('show');
         });
-        $("#idBotonModal").on('click', function () {
-             $.post("{% url 'persona-formulario' %}", formulario.serialize())
-                 .done(function( data ) {
-                    $("#idPersonaModal").find(".modal-body").html(data)
-                 });
-            {#formulario.submit();#}
+
+        formulario.submit(function( event ) {
+            $.post(urleditar, $(this).serialize())
+               .done(function( data ) {
+                   if(data.estado){
+                       $.notify({
+                           title: "Mensaje: ",
+                           message: data.mensaje,
+                           icon: 'fa fa-check'
+                       },{
+                           type: "info"
+                       });
+                       modalweb.modal('hide');
+                   }else{
+                       modalweb.find(".modal-body").html(data)
+                   }
+                tabla.bootstrapTable('refresh');
+
+               });
+            event.preventDefault();
         });
 
     </script>

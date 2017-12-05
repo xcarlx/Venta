@@ -23,7 +23,7 @@ urlpatterns = [
     url(r'^accounts/logout/', LogoutView.as_view(), name='logout'),
 
     url(r'^persona/lista/', JsonPersonaView.as_view(), name='lista-persona'),
-    url(r'^persona/formulario/', PersonaFormView.as_view(), name='persona-formulario'),
+    url(r'^persona/formulario/(?P<id>[0-9]+)/', PersonaFormView.as_view(), name='persona-formulario'),
     url(r'^persona/ubigeo/(?P<tipo>\w+)/(?P<id>[0-9]+)/', JsonUbigeo.as_view(), name='persona-ubigeo'),
 
 ]
