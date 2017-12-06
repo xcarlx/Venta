@@ -29,7 +29,7 @@
   <body class="sidebar-mini fixed">
     <div class="wrapper">
       <!-- Navbar-->
-      <header class="main-header hidden-print"><a class="logo" href="index.html">Vali</a>
+      <header class="main-header hidden-print"><a class="logo" href="{% url 'home' %}">Sistema ####</a>
         <nav class="navbar navbar-static-top">
           <!-- Sidebar toggle button--><a class="sidebar-toggle" href="#" data-toggle="offcanvas"></a>
           <!-- Navbar Right Menu-->
@@ -76,30 +76,31 @@
           <!-- Sidebar Menu-->
           <ul class="sidebar-menu">
 
-{% regroup  request.session.menu  by padre as padre_list %}
 
-{% for padre, padre_lista in padre_list %}
-     <li class="treeview"><a href="#"><i class="fa fa-laptop"></i><span> {{ padre }}  </span></a>
-    <ul class="treeview-menu">
-        {% for hijos in padre_lista %}
-            <li class="active">
-                {% if hijos.url %}
-                 <a  href="{% url hijos.url %} "  >
-                    <i class="{{ hijos.icono }}"></i>
-                    <span>
-                        {{ hijos.hijo }}
-                    </span>
-                </a>
-                {% endif %}
+            <li class="treeview"><a href="{% url 'home' %}"><i class="fa fa-home"></i><span> Inicio  </span></a></li>
+            {% regroup  request.session.menu  by padre as padre_list %}
 
-            </li>
+            {% for padre, padre_lista in padre_list %}
+                 <li class="treeview"><a href="#"><i class="fa fa-laptop"></i><span> {{ padre }}  </span></a>
+                <ul class="treeview-menu">
+                    {% for hijos in padre_lista %}
+                        <li class="">
+                            {% if hijos.url %}
+                             <a  href="{% url hijos.url %} "  >
+                                <i class="{{ hijos.icono }}"></i>
+                                <span>
+                                    {{ hijos.hijo }}
+                                </span>
+                            </a>
+                            {% endif %}
 
-        {% endfor %}
-    </ul>
-    </li>
-{% endfor %}
-                    </ul>
-                    </li>
+                        </li>
+
+                    {% endfor %}
+                </ul>
+                </li>
+            {% endfor %}
+
 
           </ul>
         </section>
@@ -108,11 +109,11 @@
 
         <div class="page-title">
           <div>
-            <h1><i class="fa fa-file-o"></i>
-                {% block contenido_titulo %}
 
-              {% endblock %}
-            </h1>
+            {% block contenido_titulo %}
+
+            {% endblock %}
+
             <p> {% block contenido_sub_titulo %}
 
                 {% endblock %}
@@ -151,6 +152,8 @@
     <script src="{% static "valiadmin/js/plugins/bootstrap-datepicker.min.js" %}"></script>
     <script src="{% static "valiadmin/js/plugins/select2.min.js" %}"></script>
     <script src="{% static "valiadmin/js/plugins/bootstrap-notify.min.js" %}"></script>
+
+
   {% block js_maestro %}
   {% endblock %}
   </body>

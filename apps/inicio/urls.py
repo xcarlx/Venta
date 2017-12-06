@@ -13,19 +13,21 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from .views import homeView, LoginView,PersonaEliminarView, \
-    LogoutView,JsonPersonaView,PersonaFormView,JsonUbigeo,SuccesEliminar
+from ..inicio import views
 from django.conf.urls import url
 
 urlpatterns = [
-    url(r'^$', homeView.as_view(), name='home'),
-    url(r'^accounts/login/', LoginView.as_view(), name='login'),
-    url(r'^accounts/logout/', LogoutView.as_view(), name='logout'),
+    url(r'^$', views.homeView.as_view(), name='home'),
+    url(r'^accounts/login/', views.LoginView.as_view(), name='login'),
+    url(r'^accounts/logout/', views.LogoutView.as_view(), name='logout'),
+    url(r'^inicio/ubigeo/(?P<tipo>\w+)/(?P<id>[0-9]+)/', views.JsonUbigeo.as_view(), name='persona-ubigeo'),
 
-    url(r'^persona/lista/', JsonPersonaView.as_view(), name='lista-persona'),
-    url(r'^persona/formulario/(?P<id>[0-9]+)/', PersonaFormView.as_view(), name='persona-formulario'),
-    url(r'^persona/eliminar/(?P<pk>[0-9]+)/', PersonaEliminarView.as_view(), name='persona-eliminar'),
-    url(r'^persona/eliminar/success/', SuccesEliminar.as_view(), name='persona-succes-eliminar'),
-    url(r'^persona/ubigeo/(?P<tipo>\w+)/(?P<id>[0-9]+)/', JsonUbigeo.as_view(), name='persona-ubigeo'),
+    # MENUS
+    url(r'^menu/inicio/$', views.MenuHomeView.as_view(), name='menu-home'),
+    url(r'^menu/lista/', views.JsonMenuView.as_view(), name='menu-lista'),
+    url(r'^menu/formulario/(?P<id>[0-9]+)/', views.MenuFormView.as_view(), name='menu-formulario'),
+    url(r'^menu/eliminar/(?P<pk>[0-9]+)/', views.MenuEliminarView.as_view(), name='menu-eliminar'),
+    url(r'^menu/eliminar/success/', views.SuccesMenuEliminar.as_view(), name='menu-succes-eliminar'),
+
 
 ]

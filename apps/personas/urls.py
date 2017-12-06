@@ -16,6 +16,14 @@ Including another URLconf
 
 from django.conf.urls import url
 
+from ..personas import views
+
 urlpatterns = [
     # url(r'^$', homeView.as_view(), name='home')
+    url(r'^home/', views.HomePersona.as_view(), name='persona-home'),
+    url(r'^persona/lista/', views.JsonPersonaView.as_view(), name='lista-persona'),
+    url(r'^persona/formulario/(?P<id>[0-9]+)/', views.PersonaFormView.as_view(), name='persona-formulario'),
+    url(r'^persona/eliminar/(?P<pk>[0-9]+)/', views.PersonaEliminarView.as_view(), name='persona-eliminar'),
+    url(r'^persona/eliminar/success/', views.SuccesEliminar.as_view(), name='persona-succes-eliminar'),
+
 ]

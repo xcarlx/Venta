@@ -29,7 +29,7 @@ class Menu(models.Model):
     url = models.CharField(max_length=200, blank=True, null=True)
     icono = models.CharField(max_length=50, blank=True, null=True)
     menu_padre = models.ForeignKey("self", related_name='+',blank=True, null=True)
-    permisos = models.ManyToManyField(Usuario, through='Permiso')
+    permisos = models.ManyToManyField(Usuario, through='Permiso',through_fields=('menu','usuario'))
 
     def __unicode__(self):
         return self.nombre
