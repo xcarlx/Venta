@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from django.views.generic.base import View
 
@@ -14,7 +15,7 @@ from .forms import AuthenticationForm
 from django.contrib.auth import authenticate, login,logout
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
-from django.views.generic.edit import FormView, CreateView
+from django.views.generic.edit import FormView, CreateView, DeleteView
 from .forms import PersonaInicioForm
 from django.db.models import Q
 
@@ -116,12 +117,24 @@ class PersonaFormView(View):
             form = self.form_class()
         else:
             persona = Persona.objects.get(pk=ids)
-            initial = {'departamento': 1,'provincia':2, 'distrito':3}
+            dep = persona.IdsUbigeo()['departamento']
+            pro = persona.IdsUbigeo()['provincia']
+            dis = persona.IdsUbigeo()['distrito']
+            initial = {'departamento': dep,'provincia':pro, 'distrito':dis}
             form = self.form_class(instance=persona, initial=initial)
         return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
+        ids = int(self.kwargs['id'])
+        if ids == 0:
+            form = self.form_class(request.POST)
+        else:
+            persona = Persona.objects.get(pk=ids)
+            dep = persona.IdsUbigeo()['departamento']
+            pro = persona.IdsUbigeo()['provincia']
+            dis = persona.IdsUbigeo()['distrito']
+            initial = {'departamento': dep, 'provincia': pro, 'distrito': dis}
+            form = self.form_class(request.POST,instance=persona,initial=initial)
         dic = {"estado":False, "mensaje":"No se guardo !!!"}
         if form.is_valid():
             dic['estado'] = True
@@ -160,3 +173,15 @@ class JsonUbigeo(View):
                 lista.append(dicubigeo)
             dic['ubigeo'] = lista
             return JsonResponse(dic)
+
+class SuccesEliminar(View):
+    def get(self, response):
+        dic = {}
+        dic['estado'] = True
+        dic['mensaje'] = "Eliminado Correctamente"
+        return JsonResponse(dic)
+
+class PersonaEliminarView(DeleteView):
+    model = Persona
+    template_name = 'eliminarpersona.html'
+    success_url = reverse_lazy('persona-succes-eliminar')

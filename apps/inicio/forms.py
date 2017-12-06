@@ -67,19 +67,19 @@ class PersonaInicioForm(forms.ModelForm):
         self.fields['ubigeo'].widget = forms.HiddenInput()
 
         if len(kwargs)>0:
-            departamento = Ubigeo.objects.get(id = int(kwargs['initial']['departamento']))
-            provincia = Ubigeo.objects.get(id =int(kwargs['initial']['provincia']))
-            distrito = Ubigeo.objects.get(id =int(kwargs['initial']['distrito']))
-            self.fields['departamento'].queryset = Ubigeo.objects.filter(id = departamento.id)
+            departamento = Ubigeo.objects.get(id = kwargs['initial']['departamento'])
+            provincia = Ubigeo.objects.get(id = kwargs['initial']['provincia'])
+            distrito = Ubigeo.objects.get(id = kwargs['initial']['distrito'])
             self.fields['provincia'].queryset = Ubigeo.objects.filter(cod_dep=departamento.cod_dep, cod_dis='00').exclude(cod_pro='00')
-            self.fields['distrito'].queryset = Ubigeo.objects.filter(cod_pro=distrito.cod_pro, cod_dep=distrito.cod_dep).exclude(cod_dis='00')
+            self.fields['distrito'].queryset = Ubigeo.objects.filter(cod_pro=provincia.cod_pro, cod_dep=distrito.cod_dep).exclude(cod_dis='00')
+
         if len(args)>0:
             departamento = Ubigeo.objects.get(id = int(args[0]['departamento']))
             provincia = Ubigeo.objects.get(id =int(args[0]['provincia']))
             distrito = Ubigeo.objects.get(id =int(args[0]['distrito']))
             self.fields['departamento'].queryset = Ubigeo.objects.filter(id = departamento.id)
             self.fields['provincia'].queryset = Ubigeo.objects.filter(cod_dep=departamento.cod_dep, cod_dis='00').exclude(cod_pro='00')
-            self.fields['distrito'].queryset = Ubigeo.objects.filter(cod_pro=distrito.cod_pro, cod_dep=distrito.cod_dep).exclude(cod_dis='00')
+            self.fields['distrito'].queryset = Ubigeo.objects.filter(cod_pro=provincia.cod_pro, cod_dep=distrito.cod_dep).exclude(cod_dis='00')
 
 
 

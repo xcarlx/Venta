@@ -44,10 +44,16 @@ class Persona(models.Model):
 	def LugarNacimineto(self):
 		coddep = self.ubigeo.cod_dep
 		codpro = self.ubigeo.cod_pro
-		coddis = self.ubigeo.cod_dis
 		departamento = Ubigeo.objects.get(cod_dep=coddep, cod_pro='00', cod_dis='00')
 		provincia = Ubigeo.objects.get(cod_dep=coddep, cod_pro=codpro, cod_dis='00')
 		return "%s / %s / %s" % (departamento.nombre, provincia.nombre, self.ubigeo.nombre)
+
+	def IdsUbigeo(self):
+		coddep = self.ubigeo.cod_dep
+		codpro = self.ubigeo.cod_pro
+		departamento = Ubigeo.objects.get(cod_dep=coddep, cod_pro='00', cod_dis='00')
+		provincia = Ubigeo.objects.get(cod_dep=coddep, cod_pro=codpro, cod_dis='00')
+		return {'departamento':departamento.id, 'provincia':provincia.id, 'distrito': self.ubigeo.id}
 
 
 

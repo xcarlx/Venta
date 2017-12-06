@@ -15,7 +15,7 @@
 <script>
     var iddepartamento = 0 ;
     $("#id_departamento").change(function () {
-        iddepartamento = $(this).val() == '' ? 1 : $(this).val();
+        iddepartamento = $(this).val();
         var urls = "{% url 'persona-ubigeo' 'provincia' 12345 %}".replace(/12345/, iddepartamento)
         $.get(urls, function( data ) {
            var sel = $('#id_provincia');
@@ -31,11 +31,11 @@
         var sel1 = $('#id_distrito');
         $("#id_distrito option").remove();
         sel1.append($("<option>").attr('value','').text('---------'));
-    }).trigger('change');
+    });
 
 
     $("#id_provincia").change(function () {
-        iddepartamento = $(this).val() == '' ? 1 : $(this).val();
+        iddepartamento = $(this).val();
         var urls = "{% url 'persona-ubigeo' 'distrito' 12345 %}".replace(/12345/, iddepartamento)
         $.get(urls, function( data ) {
            var sel = $('#id_distrito');
@@ -49,12 +49,12 @@
         $("#id_distrito option").remove();
         sel1.append($("<option>").attr('value','').text('---------'));
 
-    }).trigger('change');
+    });
 
 
     $("#id_distrito").change(function () {
         $("#id_ubigeo").val($(this).val());
-    }).trigger('change');
+    });
 
     $('#id_nacimiento').datepicker({
         format: "dd/mm/yyyy",

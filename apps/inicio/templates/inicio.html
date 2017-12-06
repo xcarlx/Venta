@@ -64,9 +64,10 @@
         </thead>
 
     </tbody>
+
 </table>
 
-    {% include "modalFormulario.html" with idmodal='idPersonaModal' idformulario='idPersonaForm' urlAccionform='' %}
+{% include "modalFormulario.html" with idmodal='idPersonaModal' idformulario='idPersonaForm' %}
 {% endblock %}
 
 {% block js_maestro %}
@@ -102,27 +103,33 @@
         window.actionEvents = {
             'click .edit': function (e, value, row, index) {
                 idmodelo = row.id;
+                urleditar = ("{% url 'persona-formulario' 12345 %}").replace(/12345/, idmodelo);
+                modalweb.find(".modal-body").load(urleditar);
+                modalweb.find('h4').text("Ediar "+modelo);
                 modalweb.modal('show');
             },
             'click .remove': function (e, value, row, index) {
-                alert('You click remove icon, row: ' + JSON.stringify(row));
-                console.log(value, row, index);
+                idmodelo = row.id;
+                modalweb.modal('show');
+                urleditar = ("{% url 'persona-eliminar' 12345 %}").replace(/12345/, idmodelo);
+                modalweb.find(".modal-body").load(urleditar);
+                modalweb.find('h4').text("Eliminar "+modelo);
+                $("#idBotonModal").text("Eliminar")
             }
         };
 
          modalweb.on('shown.bs.modal', function () {
-             if(idmodelo>0){
-                 $(this).find('h4').text("Ediar "+modelo);
-             }else{
-                 $(this).find('h4').text("Nueva "+modelo);
-             }
-             var urleditar = ("{% url 'persona-formulario' 12345 %}").replace(/12345/, idmodelo);
-             $(this).find(".modal-body").load(urleditar);
+
         });
 
         $("#idNuevaPersona").on('click', function () {
             idmodelo = 0;
+            modalweb.find('h4').html('<i class="fa fa-fw fa-lg fa-check-circle" ></i>');
+            modalweb.find('h4').text("Nueva "+modelo);
             modalweb.modal('show');
+             urleditar = ("{% url 'persona-formulario' 12345 %}").replace(/12345/, idmodelo);
+             modalweb.find(".modal-body").load(urleditar);
+
         });
 
         formulario.submit(function( event ) {
@@ -145,8 +152,8 @@
                });
             event.preventDefault();
         });
-
     </script>
 
 
 {% endblock %}
+
