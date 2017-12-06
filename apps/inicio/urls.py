@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from ..inicio import views
+from ..inicio import viewstotal
 from django.conf.urls import url
 
 urlpatterns = [
@@ -23,11 +24,11 @@ urlpatterns = [
     url(r'^inicio/ubigeo/(?P<tipo>\w+)/(?P<id>[0-9]+)/', views.JsonUbigeo.as_view(), name='persona-ubigeo'),
 
     # MENUS
-    url(r'^menu/inicio/$', views.MenuHomeView.as_view(), name='menu-home'),
-    url(r'^menu/lista/', views.JsonMenuView.as_view(), name='menu-lista'),
-    url(r'^menu/formulario/(?P<id>[0-9]+)/', views.MenuFormView.as_view(), name='menu-formulario'),
-    url(r'^menu/eliminar/(?P<pk>[0-9]+)/', views.MenuEliminarView.as_view(), name='menu-eliminar'),
-    url(r'^menu/eliminar/success/', views.SuccesMenuEliminar.as_view(), name='menu-succes-eliminar'),
+    url(r'^menu/inicio/$', viewstotal.MenuHomeView.as_view(), name='menu-home'),
+    url(r'^menu/lista/', viewstotal.JsonMenuView.as_view(), name='menu-lista'),
+    url(r'^menu/formulario/(?P<id>[0-9]+)/', viewstotal.MenuFormView.as_view(), name='menu-formulario'),
+    url(r'^menu/eliminar/(?P<pk>[0-9]+)/', viewstotal.MenuEliminarView.as_view(), name='menu-eliminar'),
+    url(r'^menu/eliminar/success/', viewstotal.SuccesMenuEliminar.as_view(), name='menu-succes-eliminar'),
 
 
 ]
