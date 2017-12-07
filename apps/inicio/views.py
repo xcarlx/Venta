@@ -83,6 +83,3 @@ class JsonUbigeo(View):
             dic['ubigeo'] = lista
             return JsonResponse(dic)
 
-@method_decorator(login_required, name='dispatch')
-class MenuHomeView(TemplateView):
-    template_name = "menu.html"

@@ -6,6 +6,17 @@ from ..personas.models import Persona
 
 # Create your models here.
 
+class Menu(models.Model):
+    nombre = models.CharField(max_length=100)
+    orden = models.SmallIntegerField()
+    url = models.CharField(max_length=200, blank=True, null=True)
+    icono = models.CharField(max_length=50, blank=True, null=True)
+    menu_padre = models.ForeignKey("self", related_name='+',blank=True, null=True)
+
+
+    def __unicode__(self):
+        return self.nombre
+
 class Usuario(models.Model):
     ADMINISTRADO = 'A'
     OPERADOR = 'O'
@@ -18,21 +29,11 @@ class Usuario(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     tipo_usuario = models.CharField(max_length=1, choices=TIPO_CHOICES, default=ADMINISTRADO, )
     persona = models.ForeignKey(Persona, blank=True, null=True)
+    permisos = models.ManyToManyField(Menu, through='Permiso', through_fields=('usuario','menu'))
+
     def __unicode__(self):
         return self.user.username
 
-
-
-class Menu(models.Model):
-    nombre = models.CharField(max_length=100)
-    orden = models.SmallIntegerField()
-    url = models.CharField(max_length=200, blank=True, null=True)
-    icono = models.CharField(max_length=50, blank=True, null=True)
-    menu_padre = models.ForeignKey("self", related_name='+',blank=True, null=True)
-    permisos = models.ManyToManyField(Usuario, through='Permiso',through_fields=('menu','usuario'))
-
-    def __unicode__(self):
-        return self.nombre
 
 class Permiso(models.Model):
     usuario = models.ForeignKey(Usuario)

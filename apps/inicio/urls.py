@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from ..inicio import views
-from ..inicio import viewstotal
+from ..inicio.viewstotal import menu_padre
 from django.conf.urls import url
 
 urlpatterns = [
@@ -23,12 +23,11 @@ urlpatterns = [
     url(r'^accounts/logout/', views.LogoutView.as_view(), name='logout'),
     url(r'^inicio/ubigeo/(?P<tipo>\w+)/(?P<id>[0-9]+)/', views.JsonUbigeo.as_view(), name='persona-ubigeo'),
 
-    # MENUS
-    url(r'^menu/inicio/$', viewstotal.MenuHomeView.as_view(), name='menu-home'),
-    url(r'^menu/lista/', viewstotal.JsonMenuView.as_view(), name='menu-lista'),
-    url(r'^menu/formulario/(?P<id>[0-9]+)/', viewstotal.MenuFormView.as_view(), name='menu-formulario'),
-    url(r'^menu/eliminar/(?P<pk>[0-9]+)/', viewstotal.MenuEliminarView.as_view(), name='menu-eliminar'),
-    url(r'^menu/eliminar/success/', viewstotal.SuccesMenuEliminar.as_view(), name='menu-succes-eliminar'),
-
+    # MENUS PADRE
+    url(r'^menu/padre/inicio/', menu_padre.MenuHomeView.as_view(), name='menu-padre-home'),
+    url(r'^menu/padre/lista/', menu_padre.JsonMenuView.as_view(), name='menu-padre-lista'),
+    url(r'^menu/padre/formulario/(?P<id>[0-9]+)/', menu_padre.MenuFormView.as_view(), name='menu-padre-formulario'),
+    url(r'^menu/padre/eliminar/(?P<pk>[0-9]+)/', menu_padre.MenuEliminarView.as_view(), name='menu-padre-eliminar'),
+    url(r'^menu/padre/eliminar/success/', menu_padre.SuccesMenuEliminar.as_view(), name='menu-padre-succes-eliminar'),
 
 ]

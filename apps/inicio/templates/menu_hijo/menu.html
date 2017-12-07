@@ -35,7 +35,7 @@
  <div id="toolbar">
     <div class="form-inline" role="form">
         <div class="form-group">
-          <button id="idNuevoMenu" class="btn btn-primary icon-btn" type="button">
+          <button id="idNuevoMenuHijo" class="btn btn-primary icon-btn" type="button">
               <i class="fa fa-fw fa-lg fa-check-circle" ></i>Nuevo
           </button>
         </div>
@@ -48,7 +48,7 @@
         id="table"
         data-toolbar="#toolbar"
         data-height="480"
-{#        data-url="{% url 'lista-persona' %}"#}
+        data-url="{% url 'menu-hijo-lista' %}"
         data-search="true"
         data-classes="table table-hover table-condensed"
         data-striped="true"
@@ -59,11 +59,10 @@
         data-search="true">
         <thead>
             <tr>
-                <th data-field="nombre"  data-sortable="true">Nombre</th>
-                <th data-field="paterno"  data-sortable="true">Apellido Paterno</th>
-                <th data-field="materno"  data-sortable="true">Apellido Maderno</th>
-                <th data-field="sexo" data-sortable="true">Sexo</th>
-                <th data-field="lugar" >Lugar de Nacimiento</th>
+                <th data-field="nombre" data-sortable="true">Nombre</th>
+                <th data-field="orden" data-sortable="true">Orden</th>
+                <th data-field="url" data-sortable="true">URL</th>
+                <th data-field="icono" data-sortable="true">Icono</th>
                 <th data-field="action" data-formatter="actionFormatter" data-events="actionEvents">Action</th>
             </tr>
         </thead>
@@ -72,22 +71,22 @@
 
 </table>
 
-{% include "modalFormulario.html" with idmodal='idPersonaModal' idformulario='idPersonaForm' %}
+{% include "modalFormulario.html" with idmodal='idMenuHijoModal' idformulario='idMenuHijoForm' %}
 {% endblock %}
 
 {% block js_maestro %}
 
-{#    <script>#}
-{#        var formulario = $("#idPersonaForm");#}
-{#        var modalweb = $("#idPersonaModal");#}
-{#        var tabla = $("#table");#}
-{#        var modelo= "Persona";#}
-{#        var btnNuevo = $("#idNuevaPersona");#}
-{#        var idmodelo = 0;#}
-{#        var urlformulario = "{% url 'persona-formulario' 12345 %}";#}
-{#        var urlformularioeliminar = "{% url 'persona-eliminar' 12345 %}";#}
-{#    </script>#}
-{#    <script src="{% static "js/crud_simple.js" %}"></script>#}
+    <script>
+        var formulario = $("#idMenuHijoForm");
+        var modalweb = $("#idMenuHijoModal");
+        var tabla = $("#table");
+        var modelo= "Menu";
+        var btnNuevo = $("#idNuevoMenuHijo");
+        var idmodelo = 0;
+        var urlformulario = "{% url 'menu-hijo-formulario' 12345 %}";
+        var urlformularioeliminar = "{% url 'menu-hijo-eliminar' 12345 %}";
+    </script>
+    <script src="{% static "js/crud_simple.js" %}"></script>
 
 
 {% endblock %}

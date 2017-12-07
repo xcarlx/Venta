@@ -52,13 +52,3 @@ class AuthenticationForm(forms.Form):
 
         return self.cleaned_data
 
-class MenuForm(forms.ModelForm):
-
-    class Meta:
-        model = Menu
-        fields = "__all__"
-
-    def __init__(self,*args, **kwargs):
-        super(MenuForm, self).__init__(*args, **kwargs)
-        for i, (fname, field) in enumerate(self.fields.iteritems()):
-            field.widget.attrs['class'] = 'form-control'
