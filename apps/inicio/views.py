@@ -35,7 +35,9 @@ class LoginView(View):
         username = request.POST.get('username','')
         password = request.POST.get('password','')
         user = authenticate(request, username=username, password=password)
-        menus = Permiso.objects.filter(activo=True)
+
+        menus = Permiso.objects.filter(activo=True, usuario=user.usuario).order_by("menu__menu_padre")
+
         lista = []
         for m in menus:
             dato = {'hijo':m.menu.nombre, 'url':m.menu.url, 'icono':m.menu.icono, 'padre':m.menu.menu_padre.nombre}

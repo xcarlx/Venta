@@ -38,4 +38,4 @@ class Usuario(models.Model):
 class Permiso(models.Model):
     usuario = models.ForeignKey(Usuario)
     menu = models.ForeignKey(Menu)
-    activo = models.BooleanField(default=False)
+    activo = models.BooleanField(default=True)

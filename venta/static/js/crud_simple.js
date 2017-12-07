@@ -28,9 +28,6 @@
         }
     };
 
-     modalweb.on('shown.bs.modal', function () {
-
-    });
 
     btnNuevo.on('click', function () {
         idmodelo = 0;

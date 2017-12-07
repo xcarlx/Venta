@@ -35,7 +35,7 @@
  <div id="toolbar">
     <div class="form-inline" role="form">
         <div class="form-group">
-          <button id="idNuevoMenu" class="btn btn-primary icon-btn" type="button">
+          <button id="idNuevo" class="btn btn-primary icon-btn" type="button">
               <i class="fa fa-fw fa-lg fa-check-circle" ></i>Nuevo
           </button>
         </div>
@@ -48,7 +48,7 @@
         id="table"
         data-toolbar="#toolbar"
         data-height="480"
-        data-url="{% url 'menu-padre-lista' %}"
+        data-url="{% url 'usuario-lista' %}"
         data-search="true"
         data-classes="table table-hover table-condensed"
         data-striped="true"
@@ -59,11 +59,10 @@
         data-search="true">
         <thead>
             <tr>
-                <th data-field="action1" data-formatter="actionFormatter1" data-events="actionEvents" class="col-lg-1">Ir Sub Menu</th>
-                <th data-field="nombre" data-sortable="true" class="col-lg-5">Nombre</th>
-                <th data-field="orden" data-sortable="true" class="col-lg-5">Orden</th>
-{#                <th data-field="url" data-sortable="true">URL</th>#}
-{#                <th data-field="icono" data-sortable="true">Icono</th>#}
+                <th data-field="usuario" data-sortable="true" class="col-lg-5">Usuario</th>
+                <th data-field="password" data-sortable="true" class="col-lg-5">Usuario</th>
+                <th data-field="tipo" data-sortable="true" class="col-lg-5">Usuario</th>
+                <th data-field="responsable" data-sortable="true" class="col-lg-5">Usuario</th>
                 <th data-field="action" data-formatter="actionFormatter" data-events="actionEvents" class="col-lg-1">Action</th>
             </tr>
         </thead>
@@ -72,42 +71,23 @@
 
 </table>
 
-{% include "modalFormulario.html" with idmodal='idMenuModal' idformulario='idMenuForm' %}
+{% include "modalFormulario.html" with idmodal='idModal' idformulario='idForm' %}
 {% endblock %}
 
 {% block js_maestro %}
 
     <script>
-        var formulario = $("#idMenuForm");
-        var modalweb = $("#idMenuModal");
+        var formulario = $("#idForm");
+        var modalweb = $("#idModal");
         var tabla = $("#table");
-        var modelo= "Menu";
-        var btnNuevo = $("#idNuevoMenu");
+        var modelo= "Usuario";
+        var btnNuevo = $("#idNuevo");
         var idmodelo = 0;
-        var urlformulario = "{% url 'menu-padre-formulario' 12345 %}";
-        var urlformularioeliminar = "{% url 'menu-padre-eliminar' 12345 %}";
+        var urlformulario = "{% url 'usuario-formulario' 12345 %}";
+        var urlformularioeliminar = "{% url 'usuario-eliminar' 12345 %}";
     </script>
     <script src="{% static "js/crud_simple.js" %}"></script>
-    <script>
 
-        function actionFormatter1(value, row, index) {
-            return [
-                '<a class="menuhijo ml10" href="javascript:void(0)" title="In Menus Hijos">',
-                '<i class="fa fa-bars" aria-hidden="true"></i>',
-                '</a>'
-            ].join('');
-        }
-
-
-        window.actionEvents['click .menuhijo'] = (
-            function (e, value, row, index) {
-                var urlmenuhijo = "{% url 'menu-hijo-home' 12345 %}".replace(/12345/, row.id);
-                window.location.replace(urlmenuhijo);
-            }
-        );
-
-
-    </script>
 
 
 {% endblock %}
