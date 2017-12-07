@@ -22,7 +22,7 @@ $(function () {
 			$(toggleBtn).on('click', function (e) {
 				e.preventDefault();
 
-				//Enable sidebar push menu_padre
+				//Enable sidebar push menu
 				if ($(window).width() > (767)) {
 					if ($("body").hasClass('sidebar-collapse')) {
 						$("body").removeClass('sidebar-collapse').trigger('expanded.pushMenu');
@@ -30,7 +30,7 @@ $(function () {
 						$("body").addClass('sidebar-collapse').trigger('collapsed.pushMenu');
 					}
 				}
-				//Handle sidebar push menu_padre for small screens
+				//Handle sidebar push menu for small screens
 				else {
 					if ($("body").hasClass('sidebar-open')) {
 						$("body").removeClass('sidebar-open').removeClass('sidebar-collapse').trigger('collapsed.pushMenu');
@@ -49,7 +49,7 @@ $(function () {
 			});
 
 			$(".content-wrapper").click(function () {
-				//Enable hide menu_padre when clicking on the content-wrapper on small screens
+				//Enable hide menu when clicking on the content-wrapper on small screens
 				if ($(window).width() <= (767) && $("body").hasClass("sidebar-open")) {
 					$("body").removeClass('sidebar-open');
 				}
@@ -66,44 +66,44 @@ $(function () {
 			var $this = $(this);
 			var checkElement = $this.next();
 
-			//Check if the next element is a menu_padre and is visible
-			if ((checkElement.is('.treeview-menu_padre')) && (checkElement.is(':visible'))) {
-				//Close the menu_padre
+			//Check if the next element is a menu and is visible
+			if ((checkElement.is('.treeview-menu')) && (checkElement.is(':visible'))) {
+				//Close the menu
 				checkElement.slideUp(animationSpeed, function () {
-						checkElement.removeClass('menu_padre-open');
+						checkElement.removeClass('menu-open');
 					//Fix the layout in case the sidebar stretches over the height of the window
 					//_this.layout.fix();
 				});
 				checkElement.parent("li").removeClass("active");
 			}
-			//If the menu_padre is not visible
-			else if ((checkElement.is('.treeview-menu_padre')) && (!checkElement.is(':visible'))) {
-				//Get the parent menu_padre
+			//If the menu is not visible
+			else if ((checkElement.is('.treeview-menu')) && (!checkElement.is(':visible'))) {
+				//Get the parent menu
 				var parent = $this.parents('ul').first();
 				//Close all open menus within the parent
 				var ul = parent.find('ul:visible').slideUp(animationSpeed);
-				//Remove the menu_padre-open class from the parent
-				ul.removeClass('menu_padre-open');
+				//Remove the menu-open class from the parent
+				ul.removeClass('menu-open');
 				//Get the parent li
 				var parent_li = $this.parent("li");
 
-				//Open the target menu_padre and add the menu_padre-open class
+				//Open the target menu and add the menu-open class
 				checkElement.slideDown(animationSpeed, function () {
 					//Add the class active to the parent li
-					checkElement.addClass('menu_padre-open');
+					checkElement.addClass('menu-open');
 					parent.find('li.active').removeClass('active');
 					parent_li.addClass('active');
 				});
 			}
 			//if this isn't a link, prevent the page from being redirected
-			if (checkElement.is('.treeview-menu_padre')) {
+			if (checkElement.is('.treeview-menu')) {
 				e.preventDefault();
 			}
 		});
 
 		//open parent menus when child item is active
 		$(document).ready(function () {
-			$(menu).find('.treeview-menu_padre li.active').parents('.treeview').addClass('active');
+			$(menu).find('.treeview-menu li.active').parents('.treeview').addClass('active');
        		 });
 	};
 

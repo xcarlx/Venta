@@ -65,11 +65,11 @@
                             sprintf('<i class="%s %s"></i> ', this.options.iconsPrefix, this.options.icons.export),
                             '<span class="caret"></span>',
                         '</button>',
-                        '<ul class="dropdown-menu_padre" role="menu_padre">',
+                        '<ul class="dropdown-menu" role="menu">',
                         '</ul>',
                     '</div>'].join('')).appendTo($btnGroup);
 
-                var $menu = $export.find('.dropdown-menu_padre'),
+                var $menu = $export.find('.dropdown-menu'),
                     exportTypes = this.options.exportTypes;
 
                 if (typeof this.options.exportTypes === 'string') {

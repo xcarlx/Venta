@@ -1102,7 +1102,7 @@
                 sprintf('<i class="%s %s"></i>', this.options.iconsPrefix, this.options.icons.columns),
                 ' <span class="caret"></span>',
                 '</button>',
-                '<ul class="dropdown-menu_padre" role="menu_padre">');
+                '<ul class="dropdown-menu" role="menu">');
 
             $.each(this.columns, function (i, column) {
                 if (column.radio || column.checkbox) {
@@ -1370,7 +1370,7 @@
                     '</span>',
                     ' <span class="caret"></span>',
                     '</button>',
-                    '<ul class="dropdown-menu_padre" role="menu_padre">'
+                    '<ul class="dropdown-menu" role="menu">'
                 ];
 
             if (typeof this.options.pageList === 'string') {

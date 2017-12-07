@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                 ('orden', models.SmallIntegerField()),
                 ('url', models.CharField(max_length=200)),
                 ('icono', models.CharField(max_length=50)),
-                ('menu_padre', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='+', to='inicio.Menu')),
+                ('menu', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='+', to='inicio.Menu')),
             ],
         ),
         migrations.CreateModel(
@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('activo', models.BooleanField(default=False)),
-                ('menu_padre', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='inicio.Menu')),
+                ('menu', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='inicio.Menu')),
             ],
         ),
         migrations.CreateModel(
@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='inicio.Usuario'),
         ),
         migrations.AddField(
-            model_name='menu_padre',
+            model_name='menu',
             name='permisos',
             field=models.ManyToManyField(through='inicio.Permiso', to='inicio.Usuario'),
         ),
