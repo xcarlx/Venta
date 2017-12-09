@@ -97,8 +97,6 @@
                 '</a>'
             ].join('');
         }
-
-
         window.actionEvents['click .menuhijo'] = (
             function (e, value, row, index) {
                 var urlmenuhijo = "{% url 'menu-hijo-home' 12345 %}".replace(/12345/, row.id);

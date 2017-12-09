@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -35,17 +36,23 @@ class LoginView(View):
         username = request.POST.get('username','')
         password = request.POST.get('password','')
         user = authenticate(request, username=username, password=password)
-
-        menus = Permiso.objects.filter(activo=True, usuario=user.usuario).order_by("menu__menu_padre")
-
-        lista = []
-        for m in menus:
-            dato = {'hijo':m.menu.nombre, 'url':m.menu.url, 'icono':m.menu.icono, 'padre':m.menu.menu_padre.nombre}
-            lista.append(dato)
+        print user
         if user is not None:
-            request.session['menu']=lista
-            login(request, user)
-            return redirect('/')
+            try:
+                menus = Permiso.objects.filter(activo=True, usuario=user.usuario).order_by("menu__menu_padre")
+                lista = []
+                for m in menus:
+                    dato = {'hijo':m.menu.nombre, 'url':m.menu.url, 'icono':m.menu.icono, 'padre':m.menu.menu_padre.nombre}
+                    lista.append(dato)
+                if user is not None:
+                    request.session['menu']=lista
+                    login(request, user)
+                    return redirect('/')
+                else:
+                    return render(request, self.template_name, {"form": self.form_class})
+
+            except ObjectDoesNotExist:
+                return render(request, self.template_name, {"form": self.form_class})
         else:
             return render(request, self.template_name, {"form": self.form_class})
 

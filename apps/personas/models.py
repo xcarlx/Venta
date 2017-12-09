@@ -30,7 +30,7 @@ class Persona(models.Model):
     sexo = models.CharField(max_length=1, choices=SEXOL_CHOICES, default=MASCULINO, )
 
     def __unicode__(self):
-        return "%s" % (self.nombre)
+        return "%s %s" % (self.nombre, self.paterno)
 
     def nombreCompleto(self):
         return self.nombre + ' ' + self.paterno + ' ' + self.materno

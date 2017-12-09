@@ -26,7 +26,7 @@ urlpatterns = [
     #USUARIOS
     url(r'^usuario/inicio/', usuario.HomeView.as_view(), name='usuario-home'),
     url(r'^usuario/lista/', usuario.JsonView.as_view(), name='usuario-lista'),
-    url(r'^usuario/formulario/(?P<id>[0-9]+)/', usuario.CreateUdateFormView.as_view(), name='usuario-formulario'),
+    url(r'^usuario/formulario/(?P<id>[0-9]+)/(?P<id1>[0-9]+)/', usuario.CreateUdateFormView.as_view(), name='usuario-formulario'),
     url(r'^usuario/eliminar/(?P<pk>[0-9]+)/', usuario.EliminarView.as_view(), name='usuario-eliminar'),
     url(r'^usuario/eliminar/success/', usuario.SuccesEliminar.as_view(), name='usuario-succes-eliminar'),
 
@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^menu/padre/formulario/(?P<id>[0-9]+)/', menu_padre.MenuFormView.as_view(), name='menu-padre-formulario'),
     url(r'^menu/padre/eliminar/(?P<pk>[0-9]+)/', menu_padre.MenuEliminarView.as_view(), name='menu-padre-eliminar'),
     url(r'^menu/padre/eliminar/success/', menu_padre.SuccesMenuEliminar.as_view(), name='menu-padre-succes-eliminar'),
+
     # MENUS HIJO
     url(r'^menu/hijo/inicio/(?P<id>[0-9]+)/', menu_hijo.MenuHomeView.as_view(), name='menu-hijo-home'),
     url(r'^menu/hijo/lista/(?P<id>[0-9]+)/', menu_hijo.JsonMenuView.as_view(), name='menu-hijo-lista'),

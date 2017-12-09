@@ -1,5 +1,30 @@
 {% csrf_token %}
+
 {% for field in form %}
+    {% if field.is_hidden %}
+        {{ field }}
+    {% elif field.name == 'is_active' %}
+        <div class="form-group">
+            {{ field.errors }}
+            {{ field.label_tag }}
+            <div class="toggle-flip">
+                <label>
+                    {{ field }}
+                    <span class="flip-indecator" data-toggle-on="SI" data-toggle-off="NO"></span>
+                </label>
+
+            </div>
+        </div>
+    {% else %}
+        <div class="form-group">
+        {{ field.errors }}
+        {{ field.label_tag}}
+        {{ field }}
+        </div>
+    {% endif %}
+{% endfor %}
+
+{% for field in form1 %}
     {% if field.is_hidden %}
         {{ field }}
     {% else %}
@@ -7,7 +32,20 @@
         {{ field.errors }}
         {{ field.label_tag}}
         {{ field }}
-    </div>
+        </div>
     {% endif %}
-
 {% endfor %}
+
+
+<script>
+    $(document).ready(function() {
+        $.fn.select2.defaults.reset();
+        $('#id_persona').select2({
+            width: '100%'
+        });
+        $('#id_permisos').select2({
+            width: '100%'
+        });
+
+    });
+</script>

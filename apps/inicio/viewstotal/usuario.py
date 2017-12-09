@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
 from django.http import JsonResponse
@@ -9,9 +10,9 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import DeleteView, TemplateView
 
-from ..formstotal.usuario import UsuarioForm
+from ..models import Usuario, Menu, Permiso
 from ..forms import UserCreationForm
-from ..models import Usuario
+from ..formstotal import usuario
 
 @method_decorator(login_required, name='dispatch')
 class HomeView(TemplateView):
@@ -37,10 +38,8 @@ class JsonView(View):
         if len(search)>0:
             if len(sort) == 0:
                 sort='id'
-            contact_list = Usuario.objects.filter(
-                Q(nombre__icontains = search) |
-                Q(url__icontains = search) |
-                Q(icono__icontains = search)
+            contact_list = User.objects.filter(
+                Q(username__icontains = search)
             ).order_by(order + sort)
         paginator = Paginator(contact_list, limit)  # Show 25 contacts per page
         page = (offset/limit)+1
@@ -55,12 +54,12 @@ class JsonView(View):
         dic = {}
         lista = []
         for dato in contacts:
+            usua = Usuario.objects.get(user=dato)
             datadic ={}
             datadic['id'] = dato.id
-            datadic['usuario'] = dato.user.username
-            datadic['password'] = dato.user.password
-            datadic['tipo'] = dato.tipo_usuario
-            datadic['responsable'] = dato.persona.nombreCompleto()
+            datadic['id1'] = usua.id
+            datadic['usuario'] = dato.username
+            datadic['password'] = dato.password
             lista.append(datadic)
         dic['total'] = contact_list.count()
         dic['rows'] = lista
@@ -71,31 +70,53 @@ class JsonView(View):
 class CreateUdateFormView(View):
     template_name = 'usuario/usuario_formulario.html'
     form_class = UserCreationForm
-    form_class1 = UsuarioForm
+    form_class1 = usuario.UsuarioForm
     def get(self, request, *args, **kwargs):
         ids = int(self.kwargs['id'])
+        iduser = int(self.kwargs['id1'])
         if ids == 0:
             form = self.form_class()
+            form1 = self.form_class1()
         else:
             objeto = User.objects.get(pk=ids)
+            objeto1 = Usuario.objects.get(pk=iduser)
             form = self.form_class(instance=objeto)
-        return render(request, self.template_name, {'form': form})
+            form1 = self.form_class1(instance=objeto1)
+        return render(request, self.template_name, {'form': form,'form1': form1})
 
     def post(self, request, *args, **kwargs):
         ids = int(self.kwargs['id'])
-        if ids == 0:
+        iduser = int(self.kwargs['id1'])
+        if ids == 0 and iduser == 0:
             form = self.form_class(request.POST)
+            form1 = self.form_class1(request.POST)
         else:
             objeto = User.objects.get(pk=ids)
+            objeto1 = Usuario.objects.get(pk=iduser)
             form = self.form_class(request.POST,instance=objeto)
+            form1 = self.form_class1(request.POST,instance=objeto1)
+
         dic = {"estado":False, "mensaje":"No se guardo !!!"}
-        if form.is_valid():
+        if form.is_valid() and form1.is_valid():
             dic['estado'] = True
             dic['mensaje'] = "Guardado Correctamente"
-            form.save()
+            user = form.save()
+            usuario = form1.save(commit=False)
+            usuario.user= user
+            usuario.save()
+            if ids != 0 and iduser != 0:
+                usuario.permisos.clear()
+            for menu in form1.cleaned_data['permisos']:
+                permiso = Permiso(
+                    usuario = usuario,
+                    menu = menu,
+                    activo=True,
+                )
+                permiso.save()
+
             return JsonResponse(dic)
 
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {'form': form,'form1': form1})
 
 
 
