@@ -94,9 +94,9 @@
         modalweb.on('shown.bs.modal', function () {
             var idmenup = {{ menu.id }};
             $("#id_menu_padre").val(idmenup);
+            $("#id_nombre").trigger("focus");
         });
     </script>
-
 
 {% endblock %}
 

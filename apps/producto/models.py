@@ -34,7 +34,7 @@ class Producto(models.Model):
     categoria = models.ForeignKey(Categoria)
     modelo = models.ForeignKey(Modelo, blank=True, null=True)
     precio = models.DecimalField(max_digits=14, decimal_places=2)
-    imagen = models.ImageField(upload_to=user_directory_path, height_field=200, width_field=200)
+    imagen = models.ImageField(upload_to=user_directory_path, blank=True, null=True)
 
     def __unicode__(self):
         return "%s  |  %s" % (self.codigo, self.descripcion)

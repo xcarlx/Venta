@@ -84,6 +84,11 @@
         var urlformularioeliminar = "{% url 'marca-eliminar' 12345 %}";
     </script>
     <script src="{% static "js/crud_simple.js" %}"></script>
+    <script>
+        modalweb.on('shown.bs.modal', function () {
+          $("#id_nombre").trigger("focus");
+        });
+    </script>
 
 
 

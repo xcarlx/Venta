@@ -104,6 +104,10 @@
             }
         );
 
+        modalweb.on('shown.bs.modal', function () {
+          $("#id_nombre").trigger("focus");
+        });
+
 
     </script>
 

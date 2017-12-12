@@ -38,10 +38,30 @@
         modalweb.find(".modal-body").load(urleditar);
 
     });
+
+
     formulario.submit(function( event ) {
-        $.post(urleditar, $(this).serialize())
-           .done(function( data ) {
-               if(data.estado){
+        var form = $(this);
+        var formdata = false;
+        if (window.FormData){
+            formdata = new FormData(form[0]);
+        }
+
+        // $.post(urleditar, formdata ? formdata : form.serialize())
+        //    .done(function( data ) {
+        //
+        //
+        //    });
+
+        $.ajax({
+            url         : urleditar,
+            data        : formdata ? formdata : form.serialize(),
+            cache       : false,
+            contentType : false,
+            processData : false,
+            type        : 'POST',
+            success     : function(data, textStatus, jqXHR){
+                if(data.estado){
                    $.notify({
                        title: "Mensaje: ",
                        message: data.mensaje,
@@ -51,14 +71,20 @@
                    });
                    modalweb.modal('hide');
 
-               }else{
+                }else{
                    modalweb.find(".modal-body").html(data)
-               }
-            tabla.bootstrapTable('refresh');
+                }
+                tabla.bootstrapTable('refresh');
+            }
+        });
 
-           });
+
+
+
+
         event.preventDefault();
     });
+
     modalweb.on('hidden.bs.modal', function (e) {
         $("#idBotonModal").text("Guardar");
     });

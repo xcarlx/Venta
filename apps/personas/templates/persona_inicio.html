@@ -14,7 +14,7 @@
 {% block contenido_titulo %}
 
     <h1><i class="fa fa-C"></i>
-        Clientes
+        Personas
     </h1>
 {% endblock %}
 {% block contenido_sub_titulo %}
@@ -22,16 +22,16 @@
 {% endblock %}
 
 {% block contenido %}
-{% if perms.personas.add_persona %}
-    Agregar
-{% endif %}
-{% if perms.personas.change_persona %}
-    Editar
-{% endif %}
-
-{% if perms.personas.delete_persona %}
-    eliminar
-{% endif %}
+{#{% if perms.personas.add_persona %}#}
+{#    Agregar#}
+{#{% endif %}#}
+{#{% if perms.personas.change_persona %}#}
+{#    Editar#}
+{#{% endif %}#}
+{##}
+{#{% if perms.personas.delete_persona %}#}
+{#    eliminar#}
+{#{% endif %}#}
  <div id="toolbar">
     <div class="form-inline" role="form">
         <div class="form-group">
@@ -84,12 +84,17 @@
         var tabla = $("#table");
         var modelo= "Persona";
         var btnNuevo = $("#idNuevaPersona");
+        var txtforcus= $("#id_nombre");
         var idmodelo = 0;
         var urlformulario = "{% url 'persona-formulario' 12345 %}";
         var urlformularioeliminar = "{% url 'persona-eliminar' 12345 %}";
     </script>
     <script src="{% static "js/crud_simple.js" %}"></script>
-
+    <script>
+        modalweb.on('shown.bs.modal', function () {
+            $("#id_nombre").trigger("focus");
+        });
+    </script>
 
 {% endblock %}
 

@@ -13,12 +13,12 @@
 
 {% block contenido_titulo %}
 
-    <h1><i class="fa fa-users" aria-hidden="true"></i>
-        Usuario
+    <h1><i class="fa fa-navicon" aria-hidden="true"></i>
+        Modelo
     </h1>
 {% endblock %}
 {% block contenido_sub_titulo %}
-    <p> Configuracion de Usuario </p>
+    <p>Configuracion de Menus</p>
 {% endblock %}
 
 {% block contenido %}
@@ -48,7 +48,7 @@
         id="table"
         data-toolbar="#toolbar"
         data-height="480"
-        data-url="{% url 'usuario-lista' %}"
+        data-url="{% url 'modelo-lista' %}"
         data-search="true"
         data-classes="table table-hover table-condensed"
         data-striped="true"
@@ -59,8 +59,8 @@
         data-search="true">
         <thead>
             <tr>
-                <th data-field="usuario" data-sortable="true" class="col-lg-2">Usuario</th>
-                <th data-field="password" data-sortable="true" class="col-lg-3">Contraseña</th>
+                <th data-field="nombre" data-sortable="true" class="col-lg-6">Modelo</th>
+                <th data-field="marca__nombre" data-sortable="true" class="col-lg-5">Marca</th>
                 <th data-field="action" data-formatter="actionFormatter" data-events="actionEvents" class="col-lg-1">Action</th>
             </tr>
         </thead>
@@ -78,20 +78,19 @@
         var formulario = $("#idForm");
         var modalweb = $("#idModal");
         var tabla = $("#table");
-        var modelo= "Usuario";
+        var modelo= "Modelo";
         var btnNuevo = $("#idNuevo");
         var idmodelo = 0;
-        var idmodelo1 = 0;
-        var urlformulario = "{% url 'usuario-formulario' 12345 654321 %}";
-        var urlformularioeliminar = "{% url 'usuario-eliminar' 12345 %}";
+        var urlformulario = "{% url 'modelo-formulario' 12345 %}";
+        var urlformularioeliminar = "{% url 'modelo-eliminar' 12345 %}";
     </script>
-    <script src="{% static "js/crud_dos_forms.js" %}"></script>
-
+    <script src="{% static "js/crud_simple.js" %}"></script>
     <script>
         modalweb.on('shown.bs.modal', function () {
-            $("#id_username").trigger("focus");
+          $("#id_nombre").trigger("focus");
         });
     </script>
+
 
 {% endblock %}
 

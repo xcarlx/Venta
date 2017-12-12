@@ -1,0 +1,13 @@
+{% csrf_token %}
+{% for field in form %}
+    {% if field.is_hidden %}
+        {{ field }}
+    {% else %}
+        <div class="form-group">
+        {{ field.errors }}
+        {{ field.label_tag}}
+        {{ field }}
+    </div>
+    {% endif %}
+
+{% endfor %}
