@@ -113,9 +113,7 @@ class CreateUdateFormView(View):
                     activo=True,
                 )
                 permiso.save()
-
             return JsonResponse(dic)
-
         return render(request, self.template_name, {'form': form,'form1': form1})
 
 
