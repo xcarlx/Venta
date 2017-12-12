@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+{% block titulo %}
+    Pagina Personal
+{% endblock %}
+{% block css_maestro%}
+    <style>
+        .ml10 {
+            margin-left: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block contenido_titulo %}
+
+    <h1><i class="fa fa-navicon" aria-hidden="true"></i>
+        Menus
+    </h1>
+{% endblock %}
+{% block contenido_sub_titulo %}
+    <p>Configuracion de Menus</p>
+{% endblock %}
+
+{% block contenido %}
+{#{% if perms.personas.add_persona %}#}
+{#    Agregar#}
+{#{% endif %}#}
+{#{% if perms.personas.change_persona %}#}
+{#    Editar#}
+{#{% endif %}#}
+{##}
+{#{% if perms.personas.delete_persona %}#}
+{#    eliminar#}
+{#{% endif %}#}
+ <div id="toolbar">
+    <div class="form-inline" role="form">
+        <div class="form-group">
+          <button id="idNuevo" class="btn btn-primary icon-btn" type="button">
+              <i class="fa fa-fw fa-lg fa-check-circle" ></i>Nuevo
+          </button>
+        </div>
+    </div>
+</div>
+
+
+<table
+        data-toggle="table"
+        id="table"
+        data-toolbar="#toolbar"
+        data-height="480"
+        data-url="{% url 'marca-lista' %}"
+        data-search="true"
+        data-classes="table table-hover table-condensed"
+        data-striped="true"
+        data-row-style="rowStyle"
+        data-side-pagination="server"
+        data-pagination="true"
+        data-page-list="[5, 10, 25, 50]"
+        data-search="true">
+        <thead>
+            <tr>
+                <th data-field="nombre" data-sortable="true" class="col-lg-11">Nombre</th>
+                <th data-field="action" data-formatter="actionFormatter" data-events="actionEvents" class="col-lg-1">Action</th>
+            </tr>
+        </thead>
+
+    </tbody>
+
+</table>
+
+{% include "modalFormulario.html" with idmodal='idModal' idformulario='idForm' %}
+{% endblock %}
+
+{% block js_maestro %}
+
+    <script>
+        var formulario = $("#idForm");
+        var modalweb = $("#idModal");
+        var tabla = $("#table");
+        var modelo= "Marca";
+        var btnNuevo = $("#idNuevo");
+        var idmodelo = 0;
+        var urlformulario = "{% url 'marca-formulario' 12345 %}";
+        var urlformularioeliminar = "{% url 'marca-eliminar' 12345 %}";
+    </script>
+    <script src="{% static "js/crud_simple.js" %}"></script>
+
+
+
+{% endblock %}
+
+
+

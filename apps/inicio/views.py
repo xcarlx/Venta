@@ -36,7 +36,6 @@ class LoginView(View):
         username = request.POST.get('username','')
         password = request.POST.get('password','')
         user = authenticate(request, username=username, password=password)
-        print user
         if user is not None:
             try:
                 menus = Permiso.objects.filter(activo=True, usuario=user.usuario).order_by("menu__menu_padre")

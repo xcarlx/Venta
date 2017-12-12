@@ -13,13 +13,15 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url,include
-from django.contrib import admin
+from django.conf.urls import url
+from .viewstotal import marca
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^persona/', include('apps.personas.urls')),
-    url(r'^producto/', include('apps.producto.urls')),
-    url(r'^', include('apps.inicio.urls')),
+
+    url(r'^marca/inicio/', marca.HomeView.as_view(), name='marca-home'),
+    url(r'^marca/lista/', marca.JsonView.as_view(), name='marca-lista'),
+    url(r'^marca/formulario/(?P<id>[0-9]+)/', marca.FormView.as_view(), name='marca-formulario'),
+    url(r'^marca/eliminar/(?P<pk>[0-9]+)/', marca.EliminarView.as_view(), name='marca-eliminar'),
+    url(r'^marca/success/', marca.SuccesEliminar.as_view(), name='marca-succes-eliminar'),
 
 ]
