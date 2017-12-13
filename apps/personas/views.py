@@ -70,7 +70,7 @@ class JsonPersonaView(View):
             person['paterno'] = persona.paterno
             person['materno'] = persona.materno
             person['sexo'] = persona.get_sexo_display()
-            person['nacimiento'] = persona.nacimiento.strftime("%d/%m/%Y")
+            person['nacimiento'] = persona.nacimiento.strftime("%d/%m/%Y") if persona.nacimiento is not None else ""
             person['lugar'] = persona.LugarNacimineto()
             lista.append(person)
         dic['total'] = contact_list.count()
@@ -119,7 +119,7 @@ class PersonaFormView(View):
         return render(request, self.template_name, {'form': form})
 
 
-
+@method_decorator(login_required, name='dispatch')
 class SuccesEliminar(View):
     def get(self, response):
         dic = {}
@@ -127,7 +127,9 @@ class SuccesEliminar(View):
         dic['mensaje'] = "Eliminado Correctamente"
         return JsonResponse(dic)
 
+@method_decorator(login_required, name='dispatch')
 class PersonaEliminarView(DeleteView):
     model = Persona
     template_name = 'eliminarpersona.html'
     success_url = reverse_lazy('persona-succes-eliminar')
+

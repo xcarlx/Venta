@@ -94,7 +94,7 @@ class MenuFormView(View):
         return render(request, self.template_name, {'form': form})
 
 
-
+@method_decorator(login_required, name='dispatch')
 class SuccesMenuEliminar(View):
     def get(self, response):
         dic = {}
@@ -102,6 +102,7 @@ class SuccesMenuEliminar(View):
         dic['mensaje'] = "Eliminado Correctamente"
         return JsonResponse(dic)
 
+@method_decorator(login_required, name='dispatch')
 class MenuEliminarView(DeleteView):
     model = Menu
     template_name = 'menu_padre/menu_eliminar_formulario.html'

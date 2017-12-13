@@ -47,12 +47,6 @@
             formdata = new FormData(form[0]);
         }
 
-        // $.post(urleditar, formdata ? formdata : form.serialize())
-        //    .done(function( data ) {
-        //
-        //
-        //    });
-
         $.ajax({
             url         : urleditar,
             data        : formdata ? formdata : form.serialize(),

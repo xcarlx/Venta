@@ -92,12 +92,16 @@ class FormView(View):
     def post(self, request, *args, **kwargs):
         ids = int(self.kwargs['id'])
         if ids == 0:
-            form = self.form_class(request.POST)
+            form = self.form_class(request.POST, request.FILES)
         else:
             objeto = Producto.objects.get(pk=ids)
-            form = self.form_class(request.POST,instance=objeto)
+            form = self.form_class(request.POST, request.FILES, instance=objeto)
         dic = {"estado":False, "mensaje":"No se guardo !!!"}
         if form.is_valid():
+            if ids!=0 and len(request.FILES)>0:
+                obj = Producto.objects.get(pk=ids)
+                if obj.imagen:
+                    obj.imagen.delete(save=True)
             dic['estado'] = True
             dic['mensaje'] = "Guardado Correctamente"
             form.save()
@@ -106,7 +110,7 @@ class FormView(View):
         return render(request, self.template_name, {'form': form})
 
 
-
+@method_decorator(login_required, name='dispatch')
 class SuccesEliminar(View):
     def get(self, response):
         dic = {}
@@ -114,7 +118,13 @@ class SuccesEliminar(View):
         dic['mensaje'] = "Eliminado Correctamente"
         return JsonResponse(dic)
 
+@method_decorator(login_required, name='dispatch')
 class EliminarView(DeleteView):
     model = Producto
     template_name = 'producto/eliminar_formulario.html'
     success_url = reverse_lazy('modelo-succes-eliminar')
+
+    def get_success_url(self):
+        self.object.imagen.delete(save=True)
+        return super(EliminarView, self).get_success_url()
+

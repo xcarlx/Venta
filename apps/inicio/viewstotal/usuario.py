@@ -117,7 +117,7 @@ class CreateUdateFormView(View):
         return render(request, self.template_name, {'form': form,'form1': form1})
 
 
-
+@method_decorator(login_required, name='dispatch')
 class SuccesEliminar(View):
     def get(self, response):
         dic = {}
@@ -125,6 +125,8 @@ class SuccesEliminar(View):
         dic['mensaje'] = "Eliminado Correctamente"
         return JsonResponse(dic)
 
+
+@method_decorator(login_required, name='dispatch')
 class EliminarView(DeleteView):
     model = User
     template_name = 'usuario/usuario_eliminar_formulario.html'

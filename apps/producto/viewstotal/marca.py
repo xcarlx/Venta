@@ -96,7 +96,7 @@ class FormView(View):
         return render(request, self.template_name, {'form': form})
 
 
-
+@method_decorator(login_required, name='dispatch')
 class SuccesEliminar(View):
     def get(self, response):
         dic = {}
@@ -104,6 +104,7 @@ class SuccesEliminar(View):
         dic['mensaje'] = "Eliminado Correctamente"
         return JsonResponse(dic)
 
+@method_decorator(login_required, name='dispatch')
 class EliminarView(DeleteView):
     model = Marca
     template_name = 'marca/eliminar_formulario.html'

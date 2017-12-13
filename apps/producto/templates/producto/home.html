@@ -59,13 +59,13 @@
         data-search="true">
         <thead>
             <tr>
-                <th data-field="codigo" data-sortable="true" class="col-lg-1">Modelo</th>
-                <th data-field="descripcion" data-sortable="true" class="col-lg-3">Modelo</th>
-                <th data-field="categoria__nombre" data-sortable="true" class="col-lg-1">Modelo</th>
-                <th data-field="modelo__marca__nombre" data-sortable="true" class="col-lg-1">Modelo</th>
+                <th data-field="codigo" data-sortable="true" class="col-lg-1">Codigo</th>
+                <th data-field="descripcion" data-sortable="true" class="col-lg-3">Descripcion</th>
+                <th data-field="categoria__nombre" data-sortable="true" class="col-lg-2">Categoria</th>
+                <th data-field="modelo__marca__nombre" data-sortable="true" class="col-lg-2">Marca</th>
                 <th data-field="modelo__nombre" data-sortable="true" class="col-lg-1">Modelo</th>
-                <th data-field="precio" data-sortable="true" class="col-lg-1">Modelo</th>
-                <th data-field="imagen" data-sortable="true" class="col-lg-3">Modelo</th>
+                <th data-field="precio" data-sortable="true" class="col-lg-1">Precio</th>
+                <th data-field="imagen" data-formatter="imageFormatter" class="col-lg-1">Imagen</th>
                 <th data-field="action" data-formatter="actionFormatter" data-events="actionEvents" class="col-lg-1">Action</th>
             </tr>
         </thead>
@@ -94,6 +94,17 @@
         modalweb.on('shown.bs.modal', function () {
           $("#id_descripcion").trigger("focus");
         });
+
+    function imageFormatter(value, row, index) {
+        return [
+            '<img src="',
+            {{ MEDIA_URL }}row.imagen+'" ',
+            'class="img-responsive img-rounded img-thumbnail" > ',
+        ].join('');
+    }
+
+
+
     </script>
 
 
