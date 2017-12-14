@@ -11,3 +11,26 @@
     {% endif %}
 
 {% endfor %}
+
+
+<script>
+    var idobject = 0;
+    $("#id_marca").change(function () {
+        idobject = $(this).val();
+        var urls = "{% url 'modelo-json' 12345 %}".replace(/12345/, idobject)
+        $.get(urls, function( data ) {
+           var sel = $('#id_modelo');
+           $("#id_modelo option").remove();
+           sel.append($("<option>").attr('value','').text('---------'));
+           for(i = 0; i<data.modelo.length; i++){
+               sel.append($("<option>").attr('value',data.modelo[i].idmodelo).text(data.modelo[i].nombre).prop('selected', ''));
+           }
+        });
+
+        {#var sel1 = $('#id_modelo');#}
+        {#$("#id_modelo option").remove();#}
+        {#sel1.append($("<option>").attr('value','').text('---------'));#}
+
+    });
+
+</script>

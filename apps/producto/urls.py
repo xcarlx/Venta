@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^formulario/(?P<id>[0-9]+)/', producto.FormView.as_view(), name='producto-formulario'),
     url(r'^eliminar/(?P<pk>[0-9]+)/', producto.EliminarView.as_view(), name='producto-eliminar'),
     url(r'^success/', producto.SuccesEliminar.as_view(), name='producto-succes-eliminar'),
+    url(r'^modelo/(?P<id>[0-9]+)/json/', producto.JsonModelo.as_view(), name='modelo-json'),
 
     #Marca
     url(r'^marca/inicio/', marca.HomeView.as_view(), name='marca-home'),

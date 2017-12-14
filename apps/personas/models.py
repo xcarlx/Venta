@@ -18,7 +18,7 @@ class Ubigeo(models.Model):
 class Persona(models.Model):
     FEMENINO = 'F'
     MASCULINO = 'M'
-    SEXOL_CHOICES = (
+    SEXO_CHOICES = (
         (FEMENINO, 'Femenino'),
         (MASCULINO, 'Masculino'),
     )
@@ -27,7 +27,7 @@ class Persona(models.Model):
     materno = models.CharField(max_length=50)
     nacimiento = models.DateField(blank=True, null=True)
     ubigeo = models.ForeignKey(Ubigeo)
-    sexo = models.CharField(max_length=1, choices=SEXOL_CHOICES, default=MASCULINO, )
+    sexo = models.CharField(max_length=1, choices=SEXO_CHOICES, default=MASCULINO, )
 
     def __unicode__(self):
         return "%s %s" % (self.nombre, self.paterno)

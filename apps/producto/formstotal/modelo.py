@@ -4,7 +4,7 @@ from ..models import Modelo
 class ModeloForm(forms.ModelForm):
     class Meta:
         model = Modelo
-        fields = "__all__"
+        fields = ["marca", "nombre"]
 
     def __init__(self, *args, **kwargs):
         super(ModeloForm, self).__init__(*args, **kwargs)

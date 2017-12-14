@@ -12,7 +12,8 @@ from django.views import View
 from django.views.generic import DeleteView, TemplateView
 
 from ..formstotal.producto import ProductoForm
-from ..models import Producto
+from ..models import Producto, Modelo
+
 
 @method_decorator(login_required, name='dispatch')
 class HomeView(TemplateView):
@@ -83,10 +84,13 @@ class FormView(View):
     def get(self, request, *args, **kwargs):
         ids = int(self.kwargs['id'])
         if ids == 0:
-            form = self.form_class()
+
+            initial = {'codigo': CodigoProducto(), 'marca': -1}
+            form = self.form_class(initial = initial)
         else:
             objeto = Producto.objects.get(pk=ids)
-            form = self.form_class(instance=objeto)
+            initial = {'marca': objeto.modelo.marca.id, 'modelo': objeto.modelo.id}
+            form = self.form_class(instance=objeto, initial= initial)
         return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
@@ -95,7 +99,8 @@ class FormView(View):
             form = self.form_class(request.POST, request.FILES)
         else:
             objeto = Producto.objects.get(pk=ids)
-            form = self.form_class(request.POST, request.FILES, instance=objeto)
+            initial = {'marca': objeto.modelo.marca.id, 'modelo': objeto.modelo.id}
+            form = self.form_class(request.POST, request.FILES, instance=objeto, initial = initial)
         dic = {"estado":False, "mensaje":"No se guardo !!!"}
         if form.is_valid():
             if ids!=0 and len(request.FILES)>0:
@@ -128,3 +133,37 @@ class EliminarView(DeleteView):
         self.object.imagen.delete(save=True)
         return super(EliminarView, self).get_success_url()
 
+
+
+@method_decorator(login_required, name='dispatch')
+class JsonModelo(View):
+    def get(self, request,  *args, **kwargs):
+        dic = {}
+        lista = []
+        ids = kwargs['id']
+        objetos = Modelo.objects.filter(marca_id=ids)
+        for objeto in objetos:
+            objectdic = {}
+            objectdic['nombre'] = objeto.nombre
+            objectdic['idmodelo'] = objeto.id
+            lista.append(objectdic)
+        dic['modelo'] = lista
+        return JsonResponse(dic)
+
+
+
+
+def CodigoProducto():
+    producto = Producto.objects.last().id if Producto.objects.last() is not None else 0
+    if len(str(producto)) == 1:
+        return "00000"+str(producto+1)
+    elif len(str(producto)) == 2:
+        return "0000" + str(producto+1)
+    elif len(str(producto)) == 3:
+        return "000" + str(producto+1)
+    elif len(str(producto)) == 4:
+        return "00" + str(producto+1)
+    elif len(str(producto)) == 5:
+        return "0" + str(producto+1)
+    elif len(str(producto)) == 6:
+        return "" + str(producto+1)
