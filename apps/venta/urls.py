@@ -13,16 +13,18 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url,include
-from django.contrib import admin
-from django.conf import settings
-from django.conf.urls.static import static
+from django.conf.urls import url
+from .viewstotal import venta
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^persona/', include('apps.personas.urls')),
-    url(r'^producto/', include('apps.producto.urls')),
-    url(r'^venta/', include('apps.venta.urls')),
-    url(r'^', include('apps.inicio.urls')),
 
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    #Venta
+    url(r'^inicio/', venta.HomeView.as_view(), name='venta-home'),
+    url(r'^lista/', venta.JsonView.as_view(), name='venta-lista'),
+    url(r'^formulario/(?P<id>[0-9]+)/', venta.FormView.as_view(), name='venta-formulario'),
+    url(r'^eliminar/(?P<pk>[0-9]+)/', venta.EliminarView.as_view(), name='venta-eliminar'),
+    url(r'^success/', venta.SuccesEliminar.as_view(), name='venta-succes-eliminar'),
+    url(r'^producto/(?P<pk>[0-9]+)/', venta.JsonProductoView.as_view(), name='venta-producto'),
+
+
+]

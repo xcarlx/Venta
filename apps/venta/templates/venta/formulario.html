@@ -1,0 +1,83 @@
+{% load static %}
+{% csrf_token %}
+{% for field in form %}
+    {% if field.is_hidden %}
+        {{ field }}
+
+    {% elif field.name == 'documento' or field.name == "serie" or field.name == 'numero'%}
+        <div class="form-row">
+            <div class="col-md-4">
+                {{ field.errors }}
+                {{ field.label_tag}}
+                {{ field }}
+            </div>
+        </div>
+    {% else %}
+        <div class="form-group">
+             <div class="col-md-12">
+                {{ field.errors }}
+                {{ field.label_tag}}
+                {{ field }}
+             </div>
+        </div>
+    {% endif %}
+
+{% endfor %}
+    <div style="margin-top: 130px; height: 1.2px; background: #1b6d85"></div>
+<div class="table-responsive" id="tablaDetalle">
+     <table class="table table-bordered table-striped table-condensed" style="margin-top: 10px;">
+    {{ form1.management_form }}
+
+    {% for form in form1.forms %}
+        {% if forloop.first %}
+            <thead>
+            <tr>
+                {% for field in form.visible_fields %}
+                    <th>{{ field.label|capfirst }}</th>
+                {% endfor %}
+            </tr>
+            </thead>
+        {% endif %}
+        <tr class="{% cycle row1 row2 %} formset_row">
+            {% for field in form.visible_fields %}
+                <td>
+                    {# Include the hidden fields in the form #}
+                    {% if forloop.first %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+                    {% endif %}
+                    {{ field.errors.as_ul }}
+                    {{ field }}
+                </td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</table>
+</div>
+
+
+
+    <script src="{% static "venta/venta.js" %}"></script>
+   <script type="text/javascript">
+        $('.formset_row').formset({
+            addText: 'Nuevo Producto',
+            deleteText: 'Elimiar',
+            prefix: 'detalleventa_set'
+        });
+        $("#tablaDetalle").on("change","select.form-control",function () {
+            attrp = $(this).attr("id").split("-",3);
+            idprecio =  attrp[0]+"-"+attrp[1]+"-"+"precio";
+            iddescuento =  attrp[0]+"-"+attrp[1]+"-"+"descuento";
+            idcantidad =  attrp[0]+"-"+attrp[1]+"-"+"cantidad";
+            {#$("#"+idprecio).attr("readonly", true);#}
+            $("#"+iddescuento).val(0)
+            $("#"+idcantidad).val(1)
+            urlprod = "{% url 'venta-producto' 12345 %}".replace(/12345/, $(this).val());
+            $.get(urlprod, function( data ) {
+               $("#"+idprecio).val(data.precio);
+            });
+        });
+
+
+    </script>

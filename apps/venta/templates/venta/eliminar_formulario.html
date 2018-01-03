@@ -1,0 +1,19 @@
+{% csrf_token %}
+
+<div class="row">
+    <div class="form-group">
+        <label class="col-lg-2 control-label" for="p">Codigo:</label>
+         <div class="col-lg-10">
+             <p> {{ object.codigo }}</p>
+         </div>
+    </div>
+</div>
+<div class="row">
+    <div class="form-group">
+        <label class="col-lg-2 control-label" for="p">Descripcion:</label>
+        <div class="col-lg-10">
+             <p>{{ object.descripcion }}</p>
+        </div>
+    </div>
+</div>
+

@@ -35,7 +35,7 @@
         modalweb.find('h4').text("Nueva "+modelo);
         modalweb.modal('show');
         urleditar = urlformulario.replace(/12345/, idmodelo);
-        modalweb.find(".modal-body").load(urleditar);
+
     });
 
 
@@ -80,4 +80,8 @@
 
     modalweb.on('hidden.bs.modal', function (e) {
         $("#idBotonModal").text("Guardar");
+    });
+    modalweb.on('shown.bs.modal', function () {
+      modalweb.find(".modal-body").load(urleditar);
+
     });
